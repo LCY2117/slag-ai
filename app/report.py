@@ -14,10 +14,24 @@ META_COMMENT_PATTERNS = [
     r"^以上内容.*(?:结构清晰|逻辑严谨|适用于|可用于).*$",
 ]
 
+CHINESE_NUMERAL_MARKERS = set("一二三四五六七八九十")
+
+
+def normalize_list_marker_noise(line: str) -> str:
+    """Normalize accidental one-char list markers (e.g. '囁.') to bullets."""
+    m = re.match(r"^(\s*)([\u3400-\u9fff])\.\s+(.*)$", line)
+    if not m:
+        return line
+    indent, marker, content = m.groups()
+    if marker in CHINESE_NUMERAL_MARKERS:
+        return line
+    return f"{indent}- {content}"
+
 
 def clean_project_plan_markdown(markdown: str) -> str:
     lines = []
     for line in str(markdown or "").splitlines():
+        line = normalize_list_marker_noise(line)
         stripped = line.strip()
         if any(re.search(pattern, stripped) for pattern in META_COMMENT_PATTERNS):
             continue
