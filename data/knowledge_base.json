@@ -1,0 +1,43 @@
+{
+  "project_name": "MSPC-GreenAI 钢渣基镁磷水泥透水建材智能设计与应用决策系统",
+  "material_system": "以复配镁磷水泥（MPC）为胶凝材料，以工业固废钢渣为粗骨料，制备镁磷水泥钢渣透水混凝土（MSPC）。",
+  "optimal_condition": {
+    "aggregate_grade": "MP",
+    "aggregate_range_mm": "5.0–10.0",
+    "forming_method": "VM",
+    "forming_method_name": "振动成型",
+    "porosity_pct": 25.0,
+    "water_binder_ratio": 0.16,
+    "aggregate_binder_ratio": 4.8
+  },
+  "optimal_performance": {
+    "compressive_strength_28d_mpa": 41.5,
+    "flexural_strength_28d_mpa": 8.0,
+    "permeability_mm_s": 7.0,
+    "porosity_pct": 25.0
+  },
+  "rules": [
+    "中粒级钢渣（5.0–10.0 mm）与振动成型为综合最优工况。",
+    "约 25% 有效孔隙率是强度与透水性能协同优化的重要控制点。",
+    "透水系数整体随有效孔隙率增大而升高。",
+    "振动成型通常有利于提升力学性能；夯实成型更适合现场小型施工；静水压成型适合高精度构件但综合强度需谨慎评估。",
+    "粗粒级钢渣有利于形成更畅通的孔隙结构，透水性较好，但综合强度不一定最优。",
+    "钢渣替代天然骨料可实现固废资源化和低碳建材应用。"
+  ],
+  "application_scenarios": [
+    "海绵城市建设",
+    "城市透水路面",
+    "校园道路",
+    "广场",
+    "停车场",
+    "生态护坡",
+    "市政工程",
+    "应急道路修复"
+  ],
+  "carbon_economy": {
+    "steel_slag_consumption_kg_m3": 1700,
+    "raw_material_cost_saving_pct": 30,
+    "construction_maintenance_saving_pct": 40,
+    "service_life_multiplier": "2–3"
+  }
+}

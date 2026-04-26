@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MSPC-GreenAI 智能设计平台</title>
+  <link rel="stylesheet" href="/static/vendor/katex/katex.min.css?v=0.16.22" />
+  <link rel="stylesheet" href="/static/styles.css?v=20260426-math1" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow"><span></span>绿色建材 × AI 决策系统</p>
+      <h1>MSPC-GreenAI</h1>
+      <p class="subtitle">钢渣基镁磷水泥透水建材智能设计与应用决策系统</p>
+      <p class="desc">基于专家规则、半经验性能评估和硅基流动大模型 API，实现配方推荐、性能评估、工程方案生成、低碳测算和项目问答。</p>
+      <div class="hero-tags">
+        <span>规则约束</span>
+        <span>性能预测</span>
+        <span>方案生成</span>
+        <span>低碳测算</span>
+      </div>
+    </div>
+    <div class="status-card" id="health-card">正在检测服务状态...</div>
+  </header>
+
+  <main>
+    <nav class="tabs">
+      <button class="tab active" data-target="recommend">智能配方推荐</button>
+      <button class="tab" data-target="evaluate">性能评估</button>
+      <button class="tab" data-target="project">工程方案生成</button>
+      <button class="tab" data-target="carbon">节能减排测算</button>
+      <button class="tab" data-target="qa">项目 AI 问答</button>
+    </nav>
+
+    <section id="recommend" class="panel active">
+      <div class="grid two">
+        <form id="recommend-form" class="card form-card">
+          <h2>智能配方推荐</h2>
+          <label>应用场景
+            <select name="scenario">
+              <option value="parking">停车场</option>
+              <option value="pedestrian">人行步道</option>
+              <option value="plaza">城市广场</option>
+              <option value="heavy_road">重载道路</option>
+              <option value="eco_slope">生态护坡</option>
+              <option value="emergency_repair">应急道路修复</option>
+            </select>
+          </label>
+          <label>强度需求
+            <select name="strength_requirement">
+              <option value="normal">普通</option>
+              <option value="high" selected>较高</option>
+              <option value="very_high">高强</option>
+            </select>
+          </label>
+          <label>透水需求
+            <select name="permeability_requirement">
+              <option value="normal">普通</option>
+              <option value="high" selected>较高</option>
+              <option value="very_high">高透水</option>
+            </select>
+          </label>
+          <label>施工方式
+            <select name="construction_mode">
+              <option value="onsite">现场施工</option>
+              <option value="precast" selected>工厂预制/标准施工</option>
+              <option value="high_precision">高精度构件</option>
+            </select>
+          </label>
+          <label>成本优先级
+            <select name="cost_priority">
+              <option value="low_cost">低成本优先</option>
+              <option value="balanced" selected>综合平衡</option>
+              <option value="performance">高性能优先</option>
+            </select>
+          </label>
+          <button type="submit">生成推荐方案</button>
+          <div class="formula-panel">
+            <h3>推荐算法</h3>
+            <div class="formula" data-tex="Score=w_1S_c+w_2S_f+w_3S_k+w_4S_p-w_5C-w_6E"></div>
+            <p>先满足透水与孔隙率约束，再按强度、施工性和低碳得分排序。</p>
+          </div>
+        </form>
+        <div class="card result-card"><h2>推荐结果</h2><div id="recommend-result" class="result"></div></div>
+      </div>
+    </section>
+
+    <section id="evaluate" class="panel">
+      <div class="grid two">
+        <form id="evaluate-form" class="card form-card">
+          <h2>半经验性能评估</h2>
+          <label>钢渣粒径
+            <select name="aggregate_grade">
+              <option value="FP">细粒级 2.5–5.0mm</option>
+              <option value="MP" selected>中粒级 5.0–10.0mm</option>
+              <option value="CP">粗粒级 10.0–15.0mm</option>
+            </select>
+          </label>
+          <label>成型方式
+            <select name="forming_method">
+              <option value="TM">夯实成型</option>
+              <option value="VM" selected>振动成型</option>
+              <option value="HM">静水压成型</option>
+            </select>
+          </label>
+          <label>孔隙率（%）<input name="porosity_pct" type="number" value="25" step="0.1" /></label>
+          <label>水胶比<input name="water_binder_ratio" type="number" value="0.16" step="0.01" /></label>
+          <label>骨料胶凝比<input name="aggregate_binder_ratio" type="number" value="4.8" step="0.1" /></label>
+          <label>龄期（天，1h≈0.042）<input name="age_day" type="number" value="28" step="0.01" /></label>
+          <label>应用场景
+            <select name="scenario">
+              <option value="parking" selected>停车场</option>
+              <option value="pedestrian">人行步道</option>
+              <option value="heavy_road">重载道路</option>
+              <option value="eco_slope">生态护坡</option>
+            </select>
+          </label>
+          <button type="submit">评估性能</button>
+          <div class="formula-panel">
+            <h3>性能预测模型</h3>
+            <div class="formula" data-tex="P=P_0+\alpha d+\beta_m"></div>
+            <div class="formula" data-tex="K=aP+b_m"></div>
+            <div class="formula" data-tex="F_c=A_0+A_d+A_m-\lambda(P-25)^2"></div>
+            <div class="formula" data-tex="F_f=C_0+C_d+C_m-\eta(P-25)^2"></div>
+          </div>
+        </form>
+        <div class="card result-card"><h2>评估结果</h2><div id="evaluate-result" class="result"></div></div>
+      </div>
+    </section>
+
+    <section id="project" class="panel">
+      <div class="grid two">
+        <form id="project-form" class="card form-card">
+          <h2>工程应用方案生成</h2>
+          <label>工程类型<input name="project_type" value="校园停车场" /></label>
+          <label>地点<input name="location" value="云南大学校园" /></label>
+          <label>面积（m²）<input name="area_m2" type="number" value="1000" step="1" /></label>
+          <label>厚度（cm）<input name="thickness_cm" type="number" value="10" step="0.5" /></label>
+          <label>目标（用逗号分隔）<input name="goals" value="排水,低碳,耐久,防滑" /></label>
+          <label>强度需求
+            <select name="strength_requirement"><option value="high" selected>较高</option><option value="very_high">高强</option><option value="normal">普通</option></select>
+          </label>
+          <label>透水需求
+            <select name="permeability_requirement"><option value="high" selected>较高</option><option value="very_high">高透水</option><option value="normal">普通</option></select>
+          </label>
+          <label>施工方式
+            <select name="construction_mode"><option value="precast" selected>工厂预制/标准施工</option><option value="onsite">现场施工</option><option value="high_precision">高精度构件</option></select>
+          </label>
+          <label>补充要求<textarea name="extra_requirements" placeholder="例如：要降低商业成本、输出更商业化"></textarea></label>
+          <button type="submit">生成工程方案</button>
+          <div class="formula-panel">
+            <h3>方案生成链路</h3>
+            <div class="formula" data-tex="C_i=G\times M"></div>
+            <div class="formula" data-tex="F_c\ge F_{c,target},\quad K\ge K_{target},\quad 23.8\%\le P\le 26.5\%"></div>
+            <p>模型只负责组织方案文本，关键参数来自规则计算结果。</p>
+          </div>
+        </form>
+        <div class="card result-card"><h2>工程方案</h2><div id="project-result" class="result markdown"></div></div>
+      </div>
+    </section>
+
+    <section id="carbon" class="panel">
+      <div class="grid two">
+        <form id="carbon-form" class="card form-card">
+          <h2>节能减排测算</h2>
+          <label>面积（m²）<input name="area_m2" type="number" value="1000" /></label>
+          <label>厚度（cm）<input name="thickness_cm" type="number" value="10" /></label>
+          <label>钢渣消纳量（kg/m³）<input name="steel_slag_consumption_kg_m3" type="number" value="1700" /></label>
+          <label>原材料成本降低参考（%）<input name="raw_material_cost_saving_pct" type="number" value="30" /></label>
+          <label>施工养护成本降低参考（%）<input name="construction_maintenance_saving_pct" type="number" value="40" /></label>
+          <button type="submit">开始测算</button>
+          <div class="formula-panel">
+            <h3>配比与消纳计算</h3>
+            <div class="formula" data-tex="V=A\times h"></div>
+            <div class="formula" data-tex="M_a=V\times\rho_c\times k"></div>
+            <div class="formula" data-tex="M_b=\frac{M_a}{4.8},\quad M_w=0.16M_b"></div>
+          </div>
+        </form>
+        <div class="card result-card"><h2>测算结果</h2><div id="carbon-result" class="result"></div></div>
+      </div>
+    </section>
+
+    <section id="qa" class="panel">
+      <div class="grid two">
+        <form id="qa-form" class="card form-card">
+          <h2>项目 AI 问答</h2>
+          <label>问题<textarea name="question">为什么 25% 孔隙率重要？</textarea></label>
+          <label class="checkbox"><input type="checkbox" name="use_llm" checked /> 使用硅基流动 API</label>
+          <button type="submit">提问</button>
+        </form>
+        <div class="card result-card"><h2>回答</h2><div id="qa-result" class="result markdown"></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <!-- <p>当前版本为规则约束型 AI 原型，输出适合方案比选、答辩展示与项目推广；正式工程应用需结合实测数据和规范复核。</p> -->
+  </footer>
+
+  <script src="/static/vendor/markdown-it.min.js?v=14.1.0"></script>
+  <script src="/static/vendor/katex/katex.min.js?v=0.16.22"></script>
+  <script src="/static/vendor/purify.min.js?v=3.2.3"></script>
+  <script src="/static/app.js?v=20260426-math1"></script>
+</body>
+</html>

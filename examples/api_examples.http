@@ -1,0 +1,49 @@
+### 健康检查
+GET http://127.0.0.1:8000/api/health
+
+### 智能配方推荐
+POST http://127.0.0.1:8000/api/recommend
+Content-Type: application/json
+
+{
+  "scenario": "parking",
+  "strength_requirement": "high",
+  "permeability_requirement": "high",
+  "construction_mode": "precast",
+  "cost_priority": "balanced"
+}
+
+### 半经验性能评估
+POST http://127.0.0.1:8000/api/evaluate
+Content-Type: application/json
+
+{
+  "aggregate_grade": "MP",
+  "forming_method": "VM",
+  "porosity_pct": 25.0,
+  "water_binder_ratio": 0.16,
+  "aggregate_binder_ratio": 4.8,
+  "age_day": 28,
+  "scenario": "parking"
+}
+
+### 节能减排测算
+POST http://127.0.0.1:8000/api/carbon-economy
+Content-Type: application/json
+
+{
+  "area_m2": 1000,
+  "thickness_cm": 10,
+  "steel_slag_consumption_kg_m3": 1700,
+  "raw_material_cost_saving_pct": 30,
+  "construction_maintenance_saving_pct": 40
+}
+
+### 项目问答
+POST http://127.0.0.1:8000/api/qa
+Content-Type: application/json
+
+{
+  "question": "为什么 25% 孔隙率重要？",
+  "use_llm": true
+}

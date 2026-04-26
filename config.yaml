@@ -1,0 +1,20 @@
+# MSPC-GreenAI 配置文件
+# 说明：
+# 1. 不建议把真实 API Key 提交到公开仓库。
+# 2. 你可以直接在这里填 api_key，也可以复制 .env.example 为 .env 后填写环境变量。
+# 3. 环境变量优先级高于本文件：SILICONFLOW_API_KEY / SILICONFLOW_BASE_URL / SILICONFLOW_MODEL。
+
+siliconflow:
+  enabled: true
+  api_key: "sk-mtqbsmacpyuithvjysoosjfwpvhylgcljszneqywbskgjirx"  # 在这里填入有效的硅基流动 API Key，例如 sk-xxxx；也可以留空，改用 .env
+  base_url: "https://api.siliconflow.cn/v1"
+  model: "Qwen/Qwen2.5-7B-Instruct"
+  temperature: 0.35
+  max_tokens: 650
+  timeout_seconds: 30
+
+system:
+  app_name: "MSPC-GreenAI"
+  offline_fallback: true
+  language: "zh-CN"
+  citation_mode: "project_knowledge"

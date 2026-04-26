@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "note": "规则参数用于原型展示，可按真实实验数据进一步校准。",
+  "aggregate_grades": {
+    "FP": {
+      "name": "细粒级钢渣",
+      "range_mm": "2.5–5.0"
+    },
+    "MP": {
+      "name": "中粒级钢渣",
+      "range_mm": "5.0–10.0"
+    },
+    "CP": {
+      "name": "粗粒级钢渣",
+      "range_mm": "10.0–15.0"
+    }
+  },
+  "forming_methods": {
+    "TM": {
+      "name": "夯实成型",
+      "best_for": "现场小型施工"
+    },
+    "VM": {
+      "name": "振动成型",
+      "best_for": "工厂预制与综合高性能"
+    },
+    "HM": {
+      "name": "静水压成型",
+      "best_for": "高精度构件制备"
+    }
+  },
+  "score_weights": {
+    "strength": 0.35,
+    "permeability": 0.3,
+    "porosity": 0.2,
+    "constructability": 0.1,
+    "low_carbon": 0.05
+  }
+}
