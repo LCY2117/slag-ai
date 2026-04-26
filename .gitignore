@@ -43,3 +43,9 @@ htmlcov/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Keep critical frontend assets
+!favicon.ico
+!static/favicon.ico
+!static/vendor/katex/
+!static/vendor/katex/**
