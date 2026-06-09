@@ -54,9 +54,31 @@ http://127.0.0.1:8000
 .\run.ps1
 ```
 
+### Docker / 迁移运行
+
+```bash
+cp .env.example .env
+# 编辑 .env，填入 SILICONFLOW_API_KEY 等运行时配置
+docker compose up -d --build
+```
+
+默认发布到服务器本机：
+
+```text
+http://127.0.0.1:18081
+```
+
+生产公网访问建议通过 1Panel/OpenResty 反向代理到 `127.0.0.1:18081`。容器会只读挂载 `.env` 和 `config.yaml`，真实 API Key 只放在 `.env` 或运行环境变量里，不写入镜像。
+
+停止容器：
+
+```bash
+docker compose down
+```
+
 ## 4. 配置硅基流动 API Key
 
-你有两种方式：
+运行时密钥只通过 `.env` 或真实环境变量提供；`config.yaml` 仅用于非敏感默认值和文档说明。
 
 ### 方式 A：填写 `.env`
 
@@ -68,23 +90,22 @@ SILICONFLOW_BASE_URL="https://api.siliconflow.cn/v1"
 SILICONFLOW_MODEL="Qwen/Qwen2.5-7B-Instruct"
 ```
 
-### 方式 B：填写 `config.yaml`
+### 方式 B：调整 `config.yaml` 默认值（非敏感）
 
 ```yaml
 siliconflow:
   enabled: true
-  api_key: "sk-你的key"
   base_url: "https://api.siliconflow.cn/v1"
   model: "Qwen/Qwen2.5-7B-Instruct"
 ```
 
-环境变量优先级高于 `config.yaml`。
+`config.yaml` 不再作为运行时密钥来源。`SILICONFLOW_API_KEY` 只从 `.env` / 环境变量读取；环境变量也会覆盖 `config.yaml` 中对应的非敏感默认值。
 
 没有 API Key 也能运行，系统会自动使用离线模板生成推荐和报告。
 
 ## 5. 检查硅基流动 API 是否可用
 
-配置好 `.env` 或 `config.yaml` 后运行：
+配置好 `.env`（以及可选的 `config.yaml` 非敏感默认值）后运行：
 
 ```powershell
 python scripts/check_siliconflow.py
@@ -142,6 +163,6 @@ http://127.0.0.1:8000/docs
 
 - 当前输出是半经验规则评估，不能替代正式工程设计和检测报告。
 - 若用于比赛答辩，请明确说明“现阶段为规则约束型 AI 原型”。
-- 硅基流动模型名称可能调整，若接口报模型不可用，请在 `config.yaml` 中更换模型。
+- 硅基流动模型名称可能调整，若接口报模型不可用，请在 `.env` 或 `config.yaml` 中更新非敏感模型配置。
 # -
 # -

@@ -47,7 +47,8 @@ def load_config(config_path: str | None = None) -> Dict[str, Any]:
             deep_update(cfg, data)
 
     sf = cfg.setdefault("siliconflow", {})
-    sf["api_key"] = os.getenv("SILICONFLOW_API_KEY") or sf.get("api_key", "")
+    # Runtime secrets come only from the environment; config.yaml is non-sensitive defaults/docs.
+    sf["api_key"] = os.getenv("SILICONFLOW_API_KEY", "")
     sf["base_url"] = os.getenv("SILICONFLOW_BASE_URL") or sf.get("base_url", DEFAULT_CONFIG["siliconflow"]["base_url"])
     sf["model"] = os.getenv("SILICONFLOW_MODEL") or sf.get("model", DEFAULT_CONFIG["siliconflow"]["model"])
     sf["max_tokens"] = int(os.getenv("SILICONFLOW_MAX_TOKENS") or sf.get("max_tokens", DEFAULT_CONFIG["siliconflow"]["max_tokens"]))
